@@ -17,7 +17,7 @@ lazy val root = (project in file(".")).
       "io.circe" %% "circe-parser" % "0.9.3",
 
 
-      "org.mongodb.scala" %% "mongo-scala-driver" % "2.4.0",
+      "org.mongodb.scala" %% "mongo-scala-driver" % "2.1.0",
 
 
 
@@ -29,6 +29,9 @@ lazy val root = (project in file(".")).
       "com.typesafe.akka" %% "akka-http-testkit" % "10.1.3" % Test,
       "com.typesafe.akka" %% "akka-testkit" % "2.5.14" % Test,
       "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.14" % Test,
-      "org.scalatest" %% "scalatest" % "3.0.1" % Test
+      "org.scalatest" %% "scalatest" % "3.0.1" % Test,
+
+      "org.mongodb" % "mongo-java-driver" % "3.4.2",
+      "com.github.fakemongo" % "fongo" % "2.1.0"
     )
   )

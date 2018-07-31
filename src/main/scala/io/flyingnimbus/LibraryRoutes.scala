@@ -1,6 +1,6 @@
 package io.flyingnimbus
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.Logging
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
@@ -14,11 +14,11 @@ import io.flyingnimbus.BooksActor._
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.generic.auto._
 
-trait LibraryRoutes  extends LazyLogging {
+trait LibraryRoutes extends LazyLogging {
 
   implicit def system: ActorSystem
 
