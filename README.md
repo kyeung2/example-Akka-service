@@ -12,6 +12,12 @@ A simple  with one endpoint GET /books. TODO not added Mongo persistence layer y
 
 
 # project
-
 built using SBT templates:
 `sbt -Dsbt.version=0.13.15 new https://github.com/akka/akka-http-scala-seed.g8`
+
+
+# resources
+
+[Json library Circe](https://github.com/circe/circe)
+
+

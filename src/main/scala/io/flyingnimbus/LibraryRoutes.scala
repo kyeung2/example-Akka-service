@@ -15,8 +15,10 @@ import io.flyingnimbus.BooksActor._
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
+import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
+import io.circe.generic.auto._
 
-trait LibraryRoutes extends JsonSupport with LazyLogging {
+trait LibraryRoutes  extends LazyLogging {
 
   implicit def system: ActorSystem
 
