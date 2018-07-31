@@ -1,6 +1,3 @@
-lazy val akkaHttpVersion = "10.1.3"
-lazy val akkaVersion = "2.5.14"
-
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
@@ -9,19 +6,29 @@ lazy val root = (project in file(".")).
     )),
     name := "library",
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-http-xml" % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+      "com.typesafe.akka" %% "akka-http" % "10.1.3",
+      "com.typesafe.akka" %% "akka-http-xml" % "10.1.3",
+      "com.typesafe.akka" %% "akka-stream" % "2.5.14",
+
+
+      "de.heikoseeberger" %% "akka-http-circe" % "1.21.0",
+      "io.circe" %% "circe-core" % "0.9.3",
+      "io.circe" %% "circe-generic" % "0.9.3",
+      "io.circe" %% "circe-parser" % "0.9.3",
+
+
+      "org.mongodb.scala" %% "mongo-scala-driver" % "2.4.0",
+
+
 
       //finish reading https://github.com/lightbend/scala-logging
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
 
 
-      "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
-      "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
-      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+      "com.typesafe.akka" %% "akka-http-testkit" % "10.1.3" % Test,
+      "com.typesafe.akka" %% "akka-testkit" % "2.5.14" % Test,
+      "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.14" % Test,
       "org.scalatest" %% "scalatest" % "3.0.1" % Test
     )
   )
