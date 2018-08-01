@@ -15,8 +15,6 @@ A simple  with one endpoint GET /books.
 
 ###  Akka features
 * actor model:
-TODO
-
 
 
 ### resources
@@ -24,3 +22,5 @@ TODO
 [Json Akka support](https://github.com/hseeberger/akka-http-json)
 
 
+**TODO**
+complete readme
