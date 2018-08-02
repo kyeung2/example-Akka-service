@@ -1,7 +1,6 @@
 package io.flyingnimbus
 
 import akka.actor.{ActorRef, ActorSystem}
-import akka.dispatch.MessageDispatcher
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.github.fakemongo.async.FongoAsync
@@ -16,11 +15,10 @@ import org.mongodb.scala.MongoCollection
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-object LibraryApp extends App with LibraryRoutes with LazyLogging {
+object LibraryApp extends App with LazyLogging {
 
   implicit val system: ActorSystem = ActorSystem("libraryService")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
-  implicit val bulkheadDispatcher: ExecutionContext = system.dispatchers.lookup("bulkhead-dispatcher")
 
   val fakeDb: MongoDatabase = {
     val fongo: FongoAsync = new FongoAsync("in-memory-mongo")
@@ -53,10 +51,11 @@ object LibraryApp extends App with LibraryRoutes with LazyLogging {
     genre = "Religious Nature & Existence of God",
     isbn = "0140449337"))
 
+  implicit val bulkheadDispatcher: ExecutionContext = system.dispatchers.lookup("bulkhead-dispatcher")
 
   val booksActor: ActorRef = system.actorOf(BooksActor.props(userRepository), "booksActor")
 
-  Http().bindAndHandle(libraryRoutes, "localhost", 8080)
+  Http().bindAndHandle(LibraryRoutes(booksActor).libraryRoutes, "localhost", 8080)
     .onComplete {
       case Success(result) => logger.info("libraryService started. {}", result)
       case Failure(error) => logger.error("libraryService failed to start: {}", error.getMessage)
