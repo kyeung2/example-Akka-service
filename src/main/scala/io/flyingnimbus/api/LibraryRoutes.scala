@@ -1,4 +1,4 @@
-package io.flyingnimbus
+package io.flyingnimbus.api
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.event.Logging
@@ -12,12 +12,15 @@ import akka.util.Timeout
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.flyingnimbus.BooksActor._
-import io.flyingnimbus.models.Book
+import io.flyingnimbus.domain.Book
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
+/**
+  * @author Kye
+  */
 trait LibraryRoutes extends LazyLogging {
 
   implicit def system: ActorSystem
@@ -31,9 +34,13 @@ trait LibraryRoutes extends LazyLogging {
   lazy val libraryRoutes: Route =
     path("books") {
       get {
-        val books: Future[Future[Seq[Book]]] = (booksActor ? GetBooks).mapTo[Future[Seq[Book]]]
+
+        logger.info("GET /books request. start")
+        val books: Future[Seq[Book]] = (booksActor ? GetBooks).mapTo[Seq[Book]]
         onComplete(books) {
-          case Success(result: Future[Seq[Book]]) => complete(result)
+          case Success(result: Seq[Book]) =>
+            logger.info("GET /books request. end")
+            complete(result)
           case Failure(f: Throwable) =>
             logger.error(s"error occurred dealing with request: ${f.getMessage}", f)
             complete(s"error occurred dealing with request: $f")
