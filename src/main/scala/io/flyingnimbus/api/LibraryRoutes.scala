@@ -1,7 +1,6 @@
 package io.flyingnimbus.api
 
-import akka.actor.{ActorRef, ActorSystem}
-import akka.event.Logging
+import akka.actor.ActorRef
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.MethodDirectives.get
@@ -21,13 +20,11 @@ import scala.util.{Failure, Success}
 /**
   * @author Kye
   */
-trait LibraryRoutes extends LazyLogging {
+object LibraryRoutes {
+  def apply(booksActor: ActorRef): LibraryRoutes = new LibraryRoutes(booksActor)
+}
 
-  implicit def system: ActorSystem
-
-  lazy val log = Logging(system, classOf[LibraryRoutes])
-
-  def booksActor: ActorRef
+class LibraryRoutes(booksActor: ActorRef) extends LazyLogging {
 
   implicit lazy val timeout: Timeout = Timeout(5.seconds)
 
@@ -35,12 +32,12 @@ trait LibraryRoutes extends LazyLogging {
     path("books") {
       get {
 
-        logger.info("GET /books request. start")
-        val books: Future[Seq[Book]] = (booksActor ? GetBooks).mapTo[Seq[Book]]
-        onComplete(books) {
-          case Success(result: Seq[Book]) =>
-            logger.info("GET /books request. end")
-            complete(result)
+        logger.info("1. request received: a dispatcher thread will pick this up")
+        val result: Future[Seq[Book]] = (booksActor ? GetBooks).mapTo[Seq[Book]]
+        onComplete(result) {
+          case Success(books: Seq[Book]) =>
+            logger.info("4. ask on complete: same or different dispatcher thread will complete route")
+            complete(books)
           case Failure(f: Throwable) =>
             logger.error(s"error occurred dealing with request: ${f.getMessage}", f)
             complete(s"error occurred dealing with request: $f")
