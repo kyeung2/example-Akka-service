@@ -1,21 +1,22 @@
 package io.flyingnimbus
 
 import akka.actor.{Actor, ActorLogging, Props}
-import io.flyingnimbus.models.repository.BookRepository
+import akka.pattern.pipe
+import io.flyingnimbus.BooksActor._
+import io.flyingnimbus.data.BookRepository
 
+import scala.concurrent.ExecutionContext
 
 object BooksActor {
 
   case object GetBooks
 
-  def props(repository: BookRepository): Props = Props(new BooksActor(repository))
+  def props(repository: BookRepository)(implicit bulkheadContext: ExecutionContext): Props = Props(new BooksActor(repository))
 }
 
-class BooksActor(repository: BookRepository) extends Actor with ActorLogging {
-
-  import BooksActor._
+class BooksActor(repository: BookRepository)(implicit bulkheadContext: ExecutionContext) extends Actor with ActorLogging {
 
   def receive: Receive = {
-    case GetBooks => sender() ! repository.findAll()
+    case GetBooks => repository.findAll() pipeTo sender()
   }
 }

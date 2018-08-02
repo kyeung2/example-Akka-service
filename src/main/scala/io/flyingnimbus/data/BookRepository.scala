@@ -1,6 +1,6 @@
-package io.flyingnimbus.models.repository
+package io.flyingnimbus.data
 
-import io.flyingnimbus.models.Book
+import io.flyingnimbus.domain.Book
 import org.mongodb.scala._
 
 import scala.concurrent.{ExecutionContext, Future}

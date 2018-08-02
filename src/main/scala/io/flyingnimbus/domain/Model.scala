@@ -1,4 +1,4 @@
-package io.flyingnimbus.models
+package io.flyingnimbus.domain
 
 import io.circe._
 import io.circe.syntax._

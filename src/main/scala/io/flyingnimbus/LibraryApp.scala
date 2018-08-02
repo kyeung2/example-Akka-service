@@ -1,27 +1,26 @@
 package io.flyingnimbus
 
 import akka.actor.{ActorRef, ActorSystem}
+import akka.dispatch.MessageDispatcher
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.github.fakemongo.async.FongoAsync
 import com.mongodb.async.client.{FongoAsyncMongoDatabase, MongoDatabase}
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
-import io.flyingnimbus.models.Book
-import io.flyingnimbus.models.repository.BookRepository
-import io.flyingnimbus.mongo.Mongo
+import io.flyingnimbus.api.LibraryRoutes
+import io.flyingnimbus.data.{BookRepository, Mongo}
+import io.flyingnimbus.domain.Book
 import org.mongodb.scala.MongoCollection
 
-import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-object Application extends App with LibraryRoutes with LazyLogging {
+object LibraryApp extends App with LibraryRoutes with LazyLogging {
 
-
-  //https://github.com/gabfssilva/akka-http-microservice-templates/tree/master/simple-http-server-json-mongodb
   implicit val system: ActorSystem = ActorSystem("libraryService")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
-  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+  implicit val bulkheadDispatcher: ExecutionContext = system.dispatchers.lookup("bulkhead-dispatcher")
 
   val fakeDb: MongoDatabase = {
     val fongo: FongoAsync = new FongoAsync("in-memory-mongo")
