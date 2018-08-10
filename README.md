@@ -7,9 +7,8 @@ A single endpoint which retrieves data from Mongo
 
 **Stack:**
 - Akka HTTP
-- Akka Actors
+- Akka Actor
 - Scala Mongo Driver
-- Fongo (in-memory Mongo)
 - Circe (Json library)
 
 ### Setup Mongo
