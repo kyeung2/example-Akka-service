@@ -4,13 +4,12 @@ import io.circe._
 import io.circe.syntax._
 import org.bson.types.ObjectId
 
-
 case class Books(books: Seq[Book])
 case class Book(_id: ObjectId = ObjectId.get(), title: String, subTitle: String = "", genre: String, description: String, isbn: String, author: String)
 
 /**
-  * @author Kye
-  */
+ * @author Kye
+ */
 object Book {
 
   implicit val encoder: Encoder[Book] = (a: Book) => {
@@ -21,8 +20,7 @@ object Book {
       "genre" -> a.genre.asJson,
       "description" -> a.description.asJson,
       "isbn" -> a.isbn.asJson,
-      "author" -> a.author.asJson
-    )
+      "author" -> a.author.asJson)
   }
 
   implicit val decoder: Decoder[Book] = (c: HCursor) => {

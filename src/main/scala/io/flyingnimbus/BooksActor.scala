@@ -1,6 +1,6 @@
 package io.flyingnimbus
 
-import akka.actor.{Actor, Props}
+import akka.actor.{ Actor, Props }
 import akka.pattern.pipe
 import com.typesafe.scalalogging.LazyLogging
 import io.flyingnimbus.BooksActor._

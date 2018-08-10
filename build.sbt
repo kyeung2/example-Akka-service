@@ -32,6 +32,10 @@ lazy val root = (project in file(".")).
       "org.scalatest" %% "scalatest" % "3.0.1" % Test,
 
       "org.mongodb" % "mongo-java-driver" % "3.4.2",
+
+      /* use embedded if external Mongo DB not available
+
       "com.github.fakemongo" % "fongo" % "2.1.0"
+      */
     )
   )
