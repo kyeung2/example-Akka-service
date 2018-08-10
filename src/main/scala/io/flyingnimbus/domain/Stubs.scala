@@ -1,6 +1,5 @@
 package io.flyingnimbus.domain
 
-
 object Stubs {
 
   val book = Book(

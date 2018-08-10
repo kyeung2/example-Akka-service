@@ -1,19 +1,27 @@
 # example-Akka-service
-creating a simple Scala/Akka service to compare with different frameworks
+A simple Akka service to compare with different frameworks
 
-A simple  with one endpoint GET /books. 
+A single endpoint which retrieves data from Mongo
 
 `curl -X GET http://localhost:8080/books`
 
-###  stack
+**Stack:**
 - Akka HTTP
-- Akka Actors
+- Akka Actor
 - Scala Mongo Driver
-- Fongo (in-memory Mongo)
 - Circe (Json library)
 
+### Setup Mongo
 
-###  Akka features
+You can use the embedded Mongo buy uncommenting code in **EmbeddedMongo.scala** and dependency in the build.sbt. Also update **LibraryApp.scala**
+
+`val repo: BookRepository = BookRepository(EmbeddedMongo.bookCollection)`
+
+You can also easily setup a local Mongo running from a local [Docker](https://www.docker.com/docker-mac) image. Pull the [Mongo image](https://hub.docker.com/_/mongo/) and run remembering to use the **-p** option to the port. e.g:
+
+`docker run -p 27017:27017 --name some-mongo mongo`
+
+### Akka features
 * actor model:
     - Actors react to immutable messages
     - Actors process messages sequentially, no locks

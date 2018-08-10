@@ -15,11 +15,11 @@ import io.flyingnimbus.domain.Book
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 /**
-  * @author Kye
-  */
+ * @author Kye
+ */
 object LibraryRoutes {
   def apply(booksActor: ActorRef): LibraryRoutes = new LibraryRoutes(booksActor)
 }

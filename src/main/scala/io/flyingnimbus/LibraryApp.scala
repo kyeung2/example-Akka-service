@@ -3,14 +3,10 @@ package io.flyingnimbus
 import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import com.github.fakemongo.async.FongoAsync
-import com.mongodb.async.client.{FongoAsyncMongoDatabase, MongoDatabase}
-import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import io.flyingnimbus.api.LibraryRoutes
 import io.flyingnimbus.data.{BookRepository, Mongo}
-import io.flyingnimbus.domain.{Book, Stubs}
-import org.mongodb.scala.MongoCollection
+import io.flyingnimbus.domain.Stubs
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
@@ -21,21 +17,12 @@ object LibraryApp extends App with LazyLogging {
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val bulkheadDispatcher: ExecutionContext = system.dispatchers.lookup("bulkhead-dispatcher")
 
-  val fakeDb: MongoDatabase = {
-    val fongo: FongoAsync = new FongoAsync("in-memory-mongo")
-    val str: String = ConfigFactory.load().getString("mongo.database")
-    val db: FongoAsyncMongoDatabase = fongo.getDatabase(str)
-    db.withCodecRegistry(Mongo.codecRegistry)
-  }
+  val repo: BookRepository = BookRepository(Mongo.bookCollection)
+  repo.save(Stubs.book)
+  repo.save(Stubs.book2)
+  repo.save(Stubs.book3)
 
-  val fakeMongoCollection = MongoCollection(fakeDb.getCollection("books", classOf[Book]))
-  val bookRepository: BookRepository = new BookRepository(fakeMongoCollection)
-
-  bookRepository.save(Stubs.book)
-  bookRepository.save(Stubs.book2)
-  bookRepository.save(Stubs.book3)
-
-  val booksActor: ActorRef = system.actorOf(BooksActor.props(bookRepository), "booksActor")
+  val booksActor: ActorRef = system.actorOf(BooksActor.props(repo), "booksActor")
 
   Http().bindAndHandle(LibraryRoutes(booksActor).libraryRoutes, "localhost", 8080)
     .onComplete {
