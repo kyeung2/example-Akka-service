@@ -16,7 +16,7 @@ A single endpoint which retrieves data from Mongo
 
 You can use the embedded Mongo buy uncommenting code in **EmbeddedMongo.scala** and dependency in the build.sbt. Also update **LibraryApp.scala**
 
-`val repo: BookRepository = BookRepository(Mongo.bookCollection)`
+`val repo: BookRepository = BookRepository(EmbeddedMongo.bookCollection)`
 
 You can also easily setup a local Mongo running from a local [Docker](https://www.docker.com/docker-mac) image. Pull the [Mongo image](https://hub.docker.com/_/mongo/) and run remembering to use the **-p** option to the port. e.g:
 
