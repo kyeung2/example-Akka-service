@@ -1,5 +1,7 @@
 # example-Akka-service
-A simple Akka service to compare with different frameworks
+A simple Akka service to compare with various backend technologies.
+
+Blog post: [comparing execution model of various backend technologies](https://ioflyingnimbus.blogspot.com/2018/08/comparing-execution-model-of-various.html)
 
 A single endpoint which retrieves data from Mongo
 
